@@ -1,4 +1,4 @@
-# Hexagonal pattern (ports and adapters)
+﻿# Hexagonal pattern (ports and adapters)
 
 Source 1: [Octo](https://blog.octo.com/architecture-hexagonale-trois-principes-et-un-exemple-dimplementation)
 
@@ -6,77 +6,59 @@ Source 2: [Herberto Graca](https://herbertograca.com/2017/11/16/explicit-archite
 
 ## What is a pattern?
 
-A pattern is a template, a blueprint providing a structured approach to solving common design problems.
+A pattern is a template, a blueprint that provides a structured approach to solving common design problems.
 
-This is mainly done by separating concerns: code is organized into functional units that can operate independently.
+This is mainly achieved by separating concerns: code is organized into functional components that can operate independently.
 
 Proper use of patterns makes maintaining and scaling systems more easily.
 
-However, over-separation can be counterproductive, introducing complexity and reduce clarity.
+However, avoiding over-separation is key as it can introduce unnecessary complexity.
 
 ## Ports and adapters model
 
-This model explicitly separates code into an internal functional unit (the core)
+This model explicitly separates code into three main parts:
 
-and external functional units (the user and server-side):
+- `left` → `user-side` : contains the components that handle user interfaces and interactions.
+
+- `center` → `core` : contains the essential components of the system that manage business logic.
+
+- `right` → `server-side` : contains the components that handle infrastructure interactions.
 
 ```mermaid
 graph TB
 
-subgraph Server-side
-Adapter2
+subgraph Core
+Service1 --> Port1
+Service1 --> Port2
 end
 
-subgraph Core
-Service --> Port1
-Service --> Port2
+
+subgraph Server-side
+Driven2
 end
+
 
 subgraph User-side
-Adapter1
+Driver1
 end
 
-Adapter2 --> Port2 
-Adapter1 --> Port1
+Driven2 --> Port2 
+Driver1 --> Port1
 ```
 
-### User-side
+## Adapters
 
-Starting from the left, the user-side contains the code running the user interface: routers, GUI components.
+The components used by the system are called `adapters` :
 
-A user adapter (driving) or specific functional unit `tells` the core what to do.
-
-### Core
-
-Upon interaction, the user-side will trigger the core, which contains the code "actually making things happen".
-
-This is the essence of the system.
-
-### Server-side
-
-If to make things happen, the core needs information, it can trigger the server-side to the right, to obtain data from a database for example.
-
-The server-side responds to the core, which responds to the user-side to display the information.
-
-A server adapter (driven) is `told` what to do by the core.
+- Core adapters are called `services`.
+- User adapters are `drivers`, they `tell` the core what to do.
+- Server adapters are `driven`, they are `told` what to do by the core.
 
 ## Ports
 
-Adapters communicate with the core through `doors` called ports.
+Driver and driven adapters communicate with services through `doors` called ports.
 
 In simple terms, a port is an `interface`.
-
-## Driving adapters
-
-Console commands, GUI components, routers; anything front-related that will trigger the core.
-
-The core uses a specific door to access and consume the driving adapter.
-
-## Driven adapters
-
-Database queries, API calls to other services; anything back-related that will be consumed by the core.
-
-The driven adapters implement the door needed to communicate with the core.
 
 ## Practice 1
 
