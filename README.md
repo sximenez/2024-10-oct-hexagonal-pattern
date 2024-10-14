@@ -34,16 +34,16 @@ end
 
 
 subgraph Server-side
-Driven2
+Replier1
 end
 
 
 subgraph User-side
-Driver1
+Caller1
 end
 
-Driven2 --> Port2 
-Driver1 --> Port1
+Replier1 --> Port2 
+Caller1 --> Port1
 ```
 
 ## Adapters
@@ -51,14 +51,21 @@ Driver1 --> Port1
 The components used by the system are called `adapters` :
 
 - Core adapters are called `services`.
-- User adapters are `drivers`, they `tell` the core what to do.
-- Server adapters are `driven`, they are `told` what to do by the core.
+- User adapters are `callers`, they call and `tell` the core what to do.
+- Server adapters are `repliers`, they reply after being `told` what to do by the core.
 
 ## Ports
 
-Driver and driven adapters communicate with services through `doors` called ports.
+Caller and replier adapters communicate with services through `doors` called ports.
 
 In simple terms, a port is an `interface`.
 
 ## Practice 1
 
+It's essential to organize `core` code files according to business logic, not static components:
+
+instead of a folder called `ports` or `services`, a folder by action i.e. `CardProcessing`.
+
+### Instantiation
+
+From right to left:
