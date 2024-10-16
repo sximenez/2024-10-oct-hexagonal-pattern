@@ -22,6 +22,7 @@ namespace ConsoleApp.BCore.CardProcessing
                 input = Console.ReadLine();
             } while (string.IsNullOrEmpty(input));
 
+            Replier.ConvertCardCsvIntoHashSet();
             Replier.FindCard(input);
         }
     }
