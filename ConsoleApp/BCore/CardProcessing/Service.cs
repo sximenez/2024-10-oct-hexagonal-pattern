@@ -4,16 +4,22 @@ using System.Reflection.Metadata.Ecma335;
 namespace ConsoleApp.BCore.CardProcessing
 {
     // What has value for the user? Retriving cards.
-    internal class Service : ICallCardData
+    internal class Service : ICall
     {
-        public IReplyCardData Replier { get; set; }
+        public IReply Replier { get; set; }
 
-        public Service(IReplyCardData replier)
+        public Service(IReply replier)
         {
             Replier = replier;
         }
 
-        public void AskForCard()
+        public string ProcessCard(string input)
+        {
+            Replier.ConvertCardCsvIntoHashSet();
+            return Replier.FindCard(input);
+        }
+
+        public string AskForCard()
         {
             string? input;
             do
@@ -22,8 +28,7 @@ namespace ConsoleApp.BCore.CardProcessing
                 input = Console.ReadLine();
             } while (string.IsNullOrEmpty(input));
 
-            Replier.ConvertCardCsvIntoHashSet();
-            Replier.FindCard(input);
+            return ProcessCard(input);
         }
     }
 }

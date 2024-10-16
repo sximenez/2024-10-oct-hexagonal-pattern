@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace ConsoleApp.BCore.CardProcessing
 {
     // What does the core need satisfy the user ? Obtain card info.
-    internal interface IReplyCardData
+    internal interface IReply
     {
         public void ConvertCardCsvIntoHashSet();
-        public void FindCard(string input);
+        public string FindCard(string input);
     }
 }
