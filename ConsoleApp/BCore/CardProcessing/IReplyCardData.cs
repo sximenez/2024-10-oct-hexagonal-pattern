@@ -9,6 +9,7 @@ namespace ConsoleApp.BCore.CardProcessing
     // What does the core need satisfy the user ? Obtain card info.
     internal interface IReplyCardData
     {
+        public void ConvertCardCsvIntoHashSet();
         public void FindCard(string input);
     }
 }
