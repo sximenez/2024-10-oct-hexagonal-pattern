@@ -5,6 +5,7 @@ namespace ConsoleApp.AUser
     internal class Caller
     {
         public ICall Service { get; set; }
+        
         public Caller(ICall service)
         {
             Service = service;

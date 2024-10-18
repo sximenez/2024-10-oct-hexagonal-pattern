@@ -1,7 +1,4 @@
-﻿using System.Dynamic;
-using System.Reflection.Metadata.Ecma335;
-
-namespace ConsoleApp.BCore.CardProcessing
+﻿namespace ConsoleApp.BCore.CardProcessing
 {
     // What has value for the user? Retriving cards.
     internal class Service : ICall
@@ -13,13 +10,18 @@ namespace ConsoleApp.BCore.CardProcessing
             Replier = replier;
         }
 
-        public string ProcessCard(string input)
+        public void ProcessCard(string input)
         {
-            Replier.ConvertCardCsvIntoHashSet();
-            return Replier.FindCard(input);
+            Replier.ConvertCardData();
+            bool result = Replier.HandleResult(Replier.FindCard(input));
+
+            if (!result)
+            {
+                RequestCard();
+            }
         }
 
-        public string AskForCard()
+        public void RequestCard()
         {
             string? input;
             do
@@ -28,7 +30,7 @@ namespace ConsoleApp.BCore.CardProcessing
                 input = Console.ReadLine();
             } while (string.IsNullOrEmpty(input));
 
-            return ProcessCard(input);
+            ProcessCard(input);
         }
     }
 }

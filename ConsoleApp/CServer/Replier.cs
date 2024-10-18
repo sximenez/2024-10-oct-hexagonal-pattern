@@ -8,13 +8,14 @@ namespace ConsoleApp.CServer
     {
         public string FilePath { get; set; }
         public Dictionary<string, Dictionary<string, string>> Cards { get; set; }
+
         public Replier(string filePath)
         {
             FilePath = filePath;
             Cards = new Dictionary<string, Dictionary<string, string>>();
         }
 
-        public void ConvertCardCsvIntoHashSet()
+        public void ConvertCardData()
         {
             using (TextFieldParser parser = new TextFieldParser(FilePath))
             {
@@ -25,27 +26,38 @@ namespace ConsoleApp.CServer
 
                 while (!parser.EndOfData)
                 {
-                    string[]? fields = parser.ReadFields();
-
-                    if (fields is null)
+                    try
                     {
-                        throw new ArgumentNullException("The file path provided points to an empty database.");
-                    }
+                        string[]? fields = parser.ReadFields();
 
-                    if (hasHeaders)
+                        if (fields is null)
+                        {
+                            throw new ArgumentNullException("The file path provided points to an empty database.");
+                        }
+
+                        if (hasHeaders)
+                        {
+                            headers = fields.ToList();
+                            hasHeaders = false;
+                            continue;
+                        }
+
+                        Dictionary<string, string>? values = new Dictionary<string, string>();
+                        for (int i = 1; i < fields.Length; i++)
+                        {
+                            values.TryAdd(headers[i], fields[i]);
+                        }
+
+                        Cards.TryAdd(fields[0].ToLower(), values);
+                    }
+                    catch (ArgumentNullException)
                     {
-                        headers = fields.ToList();
-                        hasHeaders = false;
-                        continue;
+                        throw;
                     }
-
-                    Dictionary<string, string>? values = new Dictionary<string, string>();
-                    for (int i = 1; i < fields.Length; i++)
+                    catch (Exception e)
                     {
-                        values.TryAdd(headers[i], fields[i]);
+                        throw new Exception("Parsing error occurred.", e);
                     }
-
-                    Cards.TryAdd(fields[0].ToLower(), values);
                 }
             }
         }
@@ -55,9 +67,9 @@ namespace ConsoleApp.CServer
             if (Cards.ContainsKey(input.ToLower()))
             {
                 StringBuilder sb = new StringBuilder();
-                
+
                 sb.AppendLine();
-                sb.Append($"Pokémon: {input.Substring(0,1).ToUpper()}{input.Substring(1)}");
+                sb.Append($"Pokémon: {input.Substring(0, 1).ToUpper()}{input.Substring(1)}");
                 sb.AppendLine();
 
                 foreach (var kvp in Cards[input.ToLower()])
@@ -71,6 +83,21 @@ namespace ConsoleApp.CServer
             else
             {
                 return "Card not found.";
+            }
+        }
+
+        public bool HandleResult(string input)
+        {
+            if (input == "Card not found.")
+            {
+                Console.WriteLine(input);
+                Console.WriteLine();
+                return false;
+            }
+            else
+            {
+                Console.WriteLine(input);
+                return true;
             }
         }
     }
