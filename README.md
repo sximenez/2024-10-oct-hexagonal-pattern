@@ -77,15 +77,105 @@ class Program
 {
     static void Main(string[] args)
     {
-        // Server-side; consumes a connection string.
-        IReply replier = new Replier(@"C:\Users\steven.jimenez\source\repos\2024-10-oct-hexagonal-pattern\ConsoleApp\CServer\pokemon-50-card-library.csv");
+        // Server-side.
+        IReply replier = new Replier(GetFilePath(@"ConsoleApp\CServer\pokemon-50-card-library.csv"));
 
-        // Core; consumers a replier.
+        // Core.
         ICall service = new Service(replier);
 
-        // User-side; consumes the service or core.
+        // User-side.
         var caller = new Caller(service);
         caller.Service.RequestCard();
     }
+
+    public static string GetFilePath(string input)
+    {
+        string projectRootPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\.."));
+        return Path.Combine(projectRootPath, input);
+    }
 }
+```
+
+```csharp
+// The Replier consumes a connection string to a file.
+
+class Replier : IReply
+{
+    public string FilePath { get; set; }
+    public Dictionary<string, Dictionary<string, string>> Cards { get; set; }
+
+    public Replier(string filePath)
+    {
+        FilePath = filePath;
+        Cards = new Dictionary<string, Dictionary<string, string>>();
+    }
+}
+```
+
+```csharp
+// The Replier implements the IReply door to communicate with the service.
+
+interface IReply
+{
+    public void ConvertCardData();
+
+    public string FindCard(string input);
+
+    public bool HandleResult(string input);
+}
+
+// The Service consumes the Replier.
+
+class Service : ICall
+{
+    public IReply Replier { get; set; }
+
+    public Service(IReply replier)
+    {
+        Replier = replier;
+    }
+}
+
+// The Service implements the ICall door to communicate with the Caller.
+
+interface ICall
+{
+    public void RequestCard();
+}
+```
+
+```csharp
+// The Caller consumes the service.
+
+class Caller
+{
+    public ICall Service { get; set; }
+        
+    public Caller(ICall service)
+    {
+        Service = service;
+    }
+}
+```
+
+```mermaid
+graph TB
+
+subgraph Core
+Service -->|implements| ICall
+Service -->|consumes| IReply
+end
+
+
+subgraph Server-side
+Replier
+end
+
+
+subgraph User-side
+Caller
+end
+
+Replier -->|implements| IReply 
+Caller --> |consumes|ICall
 ```

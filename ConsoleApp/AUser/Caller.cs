@@ -2,7 +2,7 @@
 
 namespace ConsoleApp.AUser
 {
-    internal class Caller
+    class Caller
     {
         public ICall Service { get; set; }
         

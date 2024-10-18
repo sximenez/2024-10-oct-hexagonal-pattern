@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ConsoleApp.CServer
 {
-    internal class Replier : IReply
+    class Replier : IReply
     {
         public string FilePath { get; set; }
         public Dictionary<string, Dictionary<string, string>> Cards { get; set; }

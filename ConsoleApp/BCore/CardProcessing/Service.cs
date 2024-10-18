@@ -1,7 +1,7 @@
 ﻿namespace ConsoleApp.BCore.CardProcessing
 {
     // What has value for the user? Retriving cards.
-    internal class Service : ICall
+    class Service : ICall
     {
         public IReply Replier { get; set; }
 
