@@ -96,6 +96,8 @@ class Program
 }
 ```
 
+### Components
+
 ```csharp
 // The Replier consumes a connection string to a file.
 

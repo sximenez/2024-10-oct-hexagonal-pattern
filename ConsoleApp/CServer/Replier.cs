@@ -11,7 +11,7 @@ namespace ConsoleApp.CServer
 
         public Replier(string filePath)
         {
-            FilePath = filePath;
+            FilePath = filePath ?? throw new ArgumentNullException();
             Cards = new Dictionary<string, Dictionary<string, string>>();
         }
 
