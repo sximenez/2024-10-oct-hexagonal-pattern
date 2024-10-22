@@ -195,8 +195,8 @@ Five design principles intended to improve object-oriented patterns.
 | S | Single responsibility | A class should only have one job. |
 | O | Open closed | A class should be open for extension but closed for modification. |
 | L | Liskov substitution | Classes implementing interfaces should be replaceable.  |
-| I | Interface segregation | A class should not be forced to depend on an interface it doesn't use. |
-| D | Dependency inversion | Lower-level classes depend on higher-level classes via interfaces only: dependencies go towards the center. |
+| I | Interface segregation | A class should not be forced to apply interface logic it doesn't use. |
+| D | Dependency inversion | Lower-level classes are plugged in to higher-level classes via interfaces only: dependencies go toward the center. |
 
 The adapters and ports model allows to apply `SOLID` principles: 
 
