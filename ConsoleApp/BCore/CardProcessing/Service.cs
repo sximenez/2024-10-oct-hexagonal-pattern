@@ -10,7 +10,7 @@
             Replier = replier;
         }
 
-        public void ProcessCard(string input)
+        public bool ProcessCard(string input)
         {
             Replier.ConvertCardData();
             bool result = Replier.HandleResult(Replier.FindCard(input));
@@ -19,6 +19,8 @@
             {
                 RequestCard();
             }
+
+            return true;
         }
 
         public void RequestCard()

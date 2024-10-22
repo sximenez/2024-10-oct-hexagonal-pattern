@@ -6,60 +6,89 @@ namespace ConsoleApp.CServer
 {
     class Replier : IReply
     {
-        public string FilePath { get; set; }
-        public Dictionary<string, Dictionary<string, string>> Cards { get; set; }
+        private string FilePath { get; set; }
+        public Dictionary<string, Dictionary<string, string>> Cards { get; internal set; }
 
-        public Replier(string filePath)
+        internal Replier(string filePath)
         {
-            FilePath = filePath ?? throw new ArgumentNullException();
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new ArgumentNullException(nameof(filePath), "File path cannot be null or empty.");
+            }
+            else
+            {
+                FilePath = filePath;
+            }
+
             Cards = new Dictionary<string, Dictionary<string, string>>();
         }
 
         public void ConvertCardData()
         {
+            try
+            {
+                ParseFile(FilePath);
+            }
+            catch (FileNotFoundException)
+            {
+                throw;
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Parsing error occurred.", e);
+            }
+        }
+
+        internal void ParseFile(string filePath)
+        {
             using (TextFieldParser parser = new TextFieldParser(FilePath))
             {
                 parser.SetDelimiters([","]);
 
-                bool hasHeaders = true;
-                List<string> headers = new List<string>();
+                List<string> headers = ParseHeaders(parser);
 
                 while (!parser.EndOfData)
                 {
-                    try
+                    string[]? fields = parser.ReadFields();
+
+                    if (fields is null)
                     {
-                        string[]? fields = parser.ReadFields();
-
-                        if (fields is null)
-                        {
-                            throw new ArgumentNullException("The file path provided points to an empty database.");
-                        }
-
-                        if (hasHeaders)
-                        {
-                            headers = fields.ToList();
-                            hasHeaders = false;
-                            continue;
-                        }
-
-                        Dictionary<string, string>? values = new Dictionary<string, string>();
-                        for (int i = 1; i < fields.Length; i++)
-                        {
-                            values.TryAdd(headers[i], fields[i]);
-                        }
-
-                        Cards.TryAdd(fields[0].ToLower(), values);
+                        continue;
                     }
-                    catch (ArgumentNullException)
-                    {
-                        throw;
-                    }
-                    catch (Exception e)
-                    {
-                        throw new Exception("Parsing error occurred.", e);
-                    }
+
+                    var values = ParseFields(headers, fields);
+
+                    Cards.TryAdd(fields[0].ToLower(), values);
                 }
             }
+        }
+
+        private List<string> ParseHeaders(TextFieldParser parser)
+        {
+            List<string>? headers = parser.ReadFields()?.ToList();
+
+            if (headers is null)
+            {
+                throw new ArgumentNullException("Headers cannot be null.");
+            }
+
+            return headers;
+        }
+
+        private Dictionary<string, string> ParseFields(List<string> headers, string[] fields)
+        {
+            Dictionary<string, string>? values = new Dictionary<string, string>();
+
+            for (int i = 1; i < fields.Length; i++)
+            {
+                values.TryAdd(headers[i], fields[i]);
+            }
+
+            return values;
         }
 
         public string FindCard(string input)
@@ -69,7 +98,7 @@ namespace ConsoleApp.CServer
                 StringBuilder sb = new StringBuilder();
 
                 sb.AppendLine();
-                sb.Append($"Pokémon: {input.Substring(0, 1).ToUpper()}{input.Substring(1)}");
+                sb.Append($"Pokémon: {input.ToUpper()}");
                 sb.AppendLine();
 
                 foreach (var kvp in Cards[input.ToLower()])

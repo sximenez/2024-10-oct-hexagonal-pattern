@@ -8,14 +8,11 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            // Server-side; consumes a connection string.
-            IReply replier = new Replier(GetFilePath(@"ConsoleApp\CServer\pokemon-50-card-library.csv"));
+            IReply replier = new Replier(GetFilePath(@"ConsoleApp\CServer\Files\pokemon-50-card-library.csv")); // Server-side.
 
-            // Core; consumers a replier.
-            ICall service = new Service(replier);
+            ICall service = new Service(replier); // Core.
 
-            // User-side; consumes the service or core.
-            var caller = new Caller(service);
+            var caller = new Caller(service); // User-side.
             caller.Service.RequestCard();
         }
 
