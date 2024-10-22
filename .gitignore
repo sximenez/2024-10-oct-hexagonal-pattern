@@ -1,3 +1,6 @@
-﻿/ConsoleApp/.vs
+﻿.vs
+/ConsoleApp/.vs
 /ConsoleApp/bin
 /ConsoleApp/obj
+/UnitTests/bin
+/UnitTests/obj

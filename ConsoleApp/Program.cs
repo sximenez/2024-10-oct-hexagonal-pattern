@@ -8,12 +8,18 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            IReplyCardData replier = new Replier(@"C:\Users\steven.jimenez\source\repos\2024-10-oct-hexagonal-pattern\ConsoleApp\CServer\pokemon-50-card-library.csv"); // Server-side; consumes a connection string.
+            IReply replier = new Replier(GetFilePath(@"ConsoleApp\CServer\Files\pokemon-50-card-library.csv")); // Server-side.
 
-            ICallCardData service = new Service(replier); // Core; consumers a replier.
+            ICall service = new Service(replier); // Core.
 
-            var caller = new Caller(service); // User-side; consumes the core.
-            caller.Service.AskForCard();
+            var caller = new Caller(service); // User-side.
+            caller.Service.RequestCard();
+        }
+
+        public static string GetFilePath(string input)
+        {
+            string projectRootPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\.."));
+            return Path.Combine(projectRootPath, input);
         }
     }
 }

@@ -2,10 +2,11 @@
 
 namespace ConsoleApp.AUser
 {
-    internal class Caller
+    class Caller
     {
-        public ICallCardData Service { get; set; }
-        public Caller(ICallCardData service)
+        public ICall Service { get; set; }
+        
+        public Caller(ICall service)
         {
             Service = service;
         }

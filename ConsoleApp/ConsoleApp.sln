@@ -8,7 +8,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{C6B703A4-F25F-4D26-B2DF-8A246AF53177}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "..\UnitTests\UnitTests.csproj", "{574C59C1-4A44-4A09-A39E-3590769785B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +23,10 @@ Global
 		{9E0F60B7-CA7E-4931-9D7B-E25113D65863}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E0F60B7-CA7E-4931-9D7B-E25113D65863}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E0F60B7-CA7E-4931-9D7B-E25113D65863}.Release|Any CPU.Build.0 = Release|Any CPU
+		{574C59C1-4A44-4A09-A39E-3590769785B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{574C59C1-4A44-4A09-A39E-3590769785B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{574C59C1-4A44-4A09-A39E-3590769785B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{574C59C1-4A44-4A09-A39E-3590769785B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
