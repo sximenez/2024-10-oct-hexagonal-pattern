@@ -119,6 +119,8 @@ class Replier : IReply
 
 interface IReply
 {
+    Dictionary<string, Dictionary<string, string>> Cards { get; }
+
     public void ConvertCardData();
 
     public string FindCard(string input);
@@ -143,6 +145,8 @@ class Service : ICall
 interface ICall
 {
     public void RequestCard();
+
+    public bool ProcessCard(string input);
 }
 ```
 
@@ -180,4 +184,134 @@ end
 
 Replier -->|implements| IReply 
 Caller --> |consumes|ICall
+```
+
+### SOLID
+
+Five design principles intended to improve object-oriented patterns.
+
+| Initial | Name | Description |
+| --- | --- | --- |
+| S | Single responsibility | A class should only have one job. |
+| O | Open closed | A class should be open for extension but closed for modification. |
+| L | Liskov substitution | Classes implementing interfaces should be replaceable.  |
+| I | Interface segregation | A class should not be forced to depend on an interface it doesn't use. |
+| D | Dependency inversion | Lower-level classes depend on higher-level classes via interfaces only: dependencies go towards the center. |
+
+The adapters and ports model allows to apply `SOLID` principles: 
+
+#### S (single reponsibility)  
+
+Classes are specialized: 
+
+- `Replier` handles server-side needs.
+- `Service` handles main logic.
+- `Caller` handles user-side needs.
+
+#### O (open closed)
+
+If case of system extension, new components can apply interfaces (open) to ensure specific implementations do not break other components (closed):
+
+```csharp
+class Replier2 : IReply
+{
+    ...
+    public void ConvertCardData()
+    {
+        // Specific implementation.
+    }
+    ...
+}
+
+class Replier3 : IReply
+{
+    ...
+    public void ConvertCardData()
+    {
+        // Specific implementation.
+    }
+    ...
+}
+...
+```
+
+#### D (dependency injection)
+
+Using interfaces, new adapters can be plugged in to the core from the outside, ensuring dependencies only go toward the center:
+
+```mermaid
+graph TB
+
+subgraph Core
+Service --> ICall
+Service --> IReply
+end
+
+
+subgraph Server-side
+Replier1
+Replier2
+end
+
+
+subgraph User-side
+Caller1
+Caller2
+end
+
+Replier1 --> IReply
+Replier2 --> IReply
+Caller1 --> ICall
+Caller2 --> ICall
+```
+
+#### I (interface segregation)
+
+If an adapter needs special implementation, a subinterface can be used to avoid overloading the main interface:
+
+```csharp
+
+interface IReply
+{
+    ...
+    public void ConvertCardData();
+    ...
+}
+
+interface IAdvancedReply : IReply
+{
+    public void AdvancedConvertCardData();
+}
+
+```
+
+#### L (substitution)
+
+Using subinterfaces, components can be replaced without breaking the system:
+
+```csharp
+class Replier2 : IReply
+{
+    ...
+    public void ConvertCardData()
+    {
+        // Specific implementation.
+    }
+    ...
+}
+
+class Replier3 : IAdvancedReply
+{
+    ...
+    public void ConvertCardData()
+    {
+        // Specific implementation.
+    }
+    ...
+    public void AdvancedConvertCardData()
+    {
+        // Specific subimplementation.
+    }
+}
+...
 ```

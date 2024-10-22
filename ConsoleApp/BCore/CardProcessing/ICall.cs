@@ -4,6 +4,7 @@
     interface ICall
     {
         public void RequestCard();
+        
         public bool ProcessCard(string input);
     }
 }
