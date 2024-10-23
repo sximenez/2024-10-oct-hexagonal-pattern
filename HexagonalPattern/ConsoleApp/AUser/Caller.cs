@@ -1,6 +1,6 @@
-﻿using ConsoleApp.BCore.CardProcessing;
+﻿using HexagonalPattern.ConsoleApp.BCore.CardProcessing;
 
-namespace ConsoleApp.AUser
+namespace HexagonalPattern.ConsoleApp.AUser
 {
     class Caller
     {

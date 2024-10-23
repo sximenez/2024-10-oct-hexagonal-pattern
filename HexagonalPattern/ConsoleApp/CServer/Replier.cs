@@ -1,8 +1,8 @@
-﻿using ConsoleApp.BCore.CardProcessing;
+﻿using HexagonalPattern.ConsoleApp.BCore.CardProcessing;
 using Microsoft.VisualBasic.FileIO;
 using System.Text;
 
-namespace ConsoleApp.CServer
+namespace HexagonalPattern.ConsoleApp.CServer
 {
     class Replier : IReply
     {
@@ -37,9 +37,9 @@ namespace ConsoleApp.CServer
             {
                 throw;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw new Exception("Parsing error occurred.", e);
+                throw;
             }
         }
 

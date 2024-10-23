@@ -4,15 +4,41 @@ Source 1: [Octo](https://blog.octo.com/architecture-hexagonale-trois-principes-e
 
 Source 2: [Herberto Graca](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)
 
+## TOC
+
+<!--TOC-->
+  - [What is a pattern?](#what-is-a-pattern)
+  - [Ports and adapters model](#ports-and-adapters-model)
+    - [Flow of the program](#flow-of-the-program)
+  - [Adapters](#adapters)
+    - [Core](#core)
+  - [Ports](#ports)
+  - [Practice 1](#practice-1)
+    - [Instantiation](#instantiation)
+    - [Components](#components)
+    - [Tree](#tree)
+    - [Implementation](#implementation)
+    - [SOLID](#solid)
+      - [S (single reponsibility)](#s-single-reponsibility)
+      - [O (open closed)](#o-open-closed)
+      - [D (dependency injection)](#d-dependency-injection)
+      - [I (interface segregation)](#i-interface-segregation)
+      - [L (substitution)](#l-substitution)
+  - [Practice 2](#practice-2)
+  - [Practice 3](#practice-3)
+<!--/TOC-->
+
 ## What is a pattern?
 
-A pattern is a template, a blueprint that provides a structured approach to solving common design problems.
+A pattern is a model that provides a structured approach to solving common design problems in computing.
 
 This is mainly achieved by separating concerns: code is organized into functional components that can operate independently.
 
-Proper use of patterns makes maintaining and scaling systems more easily.
+Proper use of patterns helps maintain and scale systems more easily.
 
-However, avoiding over-separation is key as it can introduce unnecessary complexity.
+However, over-separating the code into many small classes and methods can be counterproductive, making the program harder to follow.
+
+A balance is key for the model to be effective.
 
 ## Ports and adapters model
 
@@ -23,6 +49,29 @@ This model explicitly separates code into three main parts:
 - `center` → `core` : contains the essential components of the system that manage business logic.
 
 - `right` → `server-side` : contains the components that handle infrastructure interactions.
+
+### Flow of the program
+
+```mermaid
+graph LR
+
+left[User-side]
+
+center[Core]
+
+right[Server-side]
+
+left --> center --> right
+right --> center --> left
+```
+
+## Adapters
+
+The components used by the system are called `adapters` :
+
+- Core adapters are called `services`.
+- User adapters are `callers`, they call and `tell` the core what to do.
+- Server adapters are `repliers`, they reply after being `told` what to do by the core.
 
 ```mermaid
 graph TB
@@ -37,22 +86,20 @@ subgraph Server-side
 Replier1
 end
 
-
 subgraph User-side
 Caller1
 end
+
 
 Replier1 --> Port2 
 Caller1 --> Port1
 ```
 
-## Adapters
+### Core
 
-The components used by the system are called `adapters` :
+The core can be organized as an adapter. 
 
-- Core adapters are called `services`.
-- User adapters are `callers`, they call and `tell` the core what to do.
-- Server adapters are `repliers`, they reply after being `told` what to do by the core.
+Or it can be further abstracted using the [Onion pattern design](#).
 
 ## Ports
 
@@ -62,9 +109,7 @@ In simple terms, a port is an `interface`.
 
 ## Practice 1
 
-It's essential to organize `core` code files according to business logic, not static components:
-
-instead of a folder called `ports` or `services`, a folder by action i.e. `CardProcessing`.
+This program is a console app simulating data search on a static database.
 
 ### Instantiation
 
@@ -164,6 +209,46 @@ class Caller
 }
 ```
 
+### Tree
+
+In the project, core files can be organized by use case instead of unrelated components: `CardProcessing` instead of `ports` or `services`.
+
+```terminal
+ConsoleApp
+├── AUser
+│   └── Caller.cs
+├── BCore
+│   └── CardProcessing
+│       ├── ICall.cs
+│       ├── IReply.cs
+│       └── Service.cs
+└── CServer
+    └── Files
+    │   ├── pokemon-50-card-library.csv
+    │   └── test-empty-file.csv
+    └── Replier.cs
+```
+
+### Implementation
+
+A console app writing Pokémon data from a `.csv` file to the console (data source: Copilot, based on data from PokéAPI):
+
+```terminal
+Please enter a Pokémon:
+Please enter a Pokémon: hello
+Card not found.
+
+Please enter a Pokémon: pikachu
+
+Pokémon: PIKACHU
+
+Type: Electric
+HP: 60
+Attack: 55
+Defense: 40
+Rarity: Common
+```
+
 ```mermaid
 graph TB
 
@@ -210,7 +295,7 @@ Classes are specialized:
 
 #### O (open closed)
 
-If case of system extension, new components can apply interfaces (open) to ensure specific implementations do not break other components (closed):
+In case of system extension, new components can apply interfaces (open) to ensure specific implementations do not break other components (closed):
 
 ```csharp
 class Replier2 : IReply
@@ -315,3 +400,11 @@ class Replier3 : IAdvancedReply
 }
 ...
 ```
+
+## Practice 2
+
+This program is a console app simulating a front controller on the user-side, expanding on [Practice 1](#practice-1).
+
+## Practice 3
+
+This program is a console app simulating a load balancer on the server-side, expanding on [Practice 2](#practice-2).
