@@ -1,14 +1,14 @@
-﻿using ConsoleApp.AUser;
-using ConsoleApp.BCore.CardProcessing;
-using ConsoleApp.CServer;
+﻿using HexagonalPattern.ConsoleApp.AUser;
+using HexagonalPattern.ConsoleApp.BCore.CardProcessing;
+using HexagonalPattern.ConsoleApp.CServer;
 
-namespace ConsoleApp
+namespace HexagonalPattern.ConsoleApp
 {
     class Program
     {
         static void Main(string[] args)
         {
-            IReply replier = new Replier(GetFilePath(@"ConsoleApp\CServer\Files\pokemon-50-card-library.csv")); // Server-side.
+            IReply replier = new Replier(GetFilePath(@"HexagonalPattern\ConsoleApp\CServer\Files\pokemon-50-card-library.csv")); // Server-side.
 
             ICall service = new Service(replier); // Core.
 

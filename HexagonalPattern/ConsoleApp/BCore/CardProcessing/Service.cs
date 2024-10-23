@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp.BCore.CardProcessing
+﻿namespace HexagonalPattern.ConsoleApp.BCore.CardProcessing
 {
     // What has value for the user? Retriving cards.
     class Service : ICall

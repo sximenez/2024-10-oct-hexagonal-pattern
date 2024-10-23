@@ -1,5 +1,6 @@
-using ConsoleApp.BCore.CardProcessing;
-using ConsoleApp.CServer;
+using HexagonalPattern.ConsoleApp;
+using HexagonalPattern.ConsoleApp.BCore.CardProcessing;
+using HexagonalPattern.ConsoleApp.CServer;
 
 namespace UnitTests
 {
@@ -10,7 +11,7 @@ namespace UnitTests
 
         static ServiceTests()
         {
-            _validFile = ConsoleApp.Program.GetFilePath(@"ConsoleApp\CServer\Files\pokemon-50-card-library.csv");
+            _validFile = Program.GetFilePath(@"HexagonalPattern\ConsoleApp\CServer\Files\pokemon-50-card-library.csv");
         }
 
         [TestMethod]

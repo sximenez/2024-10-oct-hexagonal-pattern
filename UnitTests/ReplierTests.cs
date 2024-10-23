@@ -1,5 +1,6 @@
-using ConsoleApp.BCore.CardProcessing;
-using ConsoleApp.CServer;
+using HexagonalPattern.ConsoleApp;
+using HexagonalPattern.ConsoleApp.BCore.CardProcessing;
+using HexagonalPattern.ConsoleApp.CServer;
 
 namespace UnitTests
 {
@@ -11,8 +12,8 @@ namespace UnitTests
 
         static ReplierTests()
         {
-            _validFile = ConsoleApp.Program.GetFilePath(@"ConsoleApp\CServer\Files\pokemon-50-card-library.csv");
-            _invalidFile = ConsoleApp.Program.GetFilePath(@"ConsoleApp\CServer\Files\test-empty-file.csv");
+            _validFile = Program.GetFilePath(@"HexagonalPattern\ConsoleApp\CServer\Files\pokemon-50-card-library.csv");
+            _invalidFile = Program.GetFilePath(@"HexagonalPattern\ConsoleApp\CServer\Files\test-empty-file.csv");
         }
 
         [TestMethod]
