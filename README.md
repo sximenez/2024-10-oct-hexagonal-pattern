@@ -123,7 +123,7 @@ class Program
     static void Main(string[] args)
     {
         // Server-side.
-        IReply replier = new Replier(GetFilePath(@"ConsoleApp\CServer\pokemon-50-card-library.csv"));
+        IReply replier = new Replier(GetFilePath(@"HexagonalPattern\ConsoleApp\CServer\pokemon-50-card-library.csv"));
 
         // Core.
         ICall service = new Service(replier);
@@ -231,7 +231,9 @@ ConsoleApp
 
 ### Implementation
 
-A console app writing Pokémon data from a `.csv` file to the console (data source: Copilot, based on data from PokéAPI):
+A console app writing Pokémon data from a `.csv` file to the console.
+
+Data source: Copilot, based on data from PokéAPI.
 
 ```terminal
 Please enter a Pokémon:

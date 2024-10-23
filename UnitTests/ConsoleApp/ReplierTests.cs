@@ -2,7 +2,7 @@ using HexagonalPattern.ConsoleApp;
 using HexagonalPattern.ConsoleApp.BCore.CardProcessing;
 using HexagonalPattern.ConsoleApp.CServer;
 
-namespace UnitTests
+namespace ConsoleApp.UnitTests
 {
     [TestClass]
     public class ReplierTests
