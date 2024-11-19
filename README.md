@@ -25,7 +25,7 @@ Source 2: [Herberto Graca](https://herbertograca.com/2017/11/16/explicit-archite
       - [I (interface segregation)](#i-interface-segregation)
       - [L (substitution)](#l-substitution)
   - [Practice 2](#practice-2)
-  - [Practice 3](#practice-3)
+    - [Instatiation](#instatiation)
 <!--/TOC-->
 
 ## What is a pattern?
@@ -405,8 +405,37 @@ class Replier3 : IAdvancedReply
 
 ## Practice 2
 
-This program is a console app simulating a front controller on the user-side, expanding on [Practice 1](#practice-1).
+This program is a console app simulating a load balancer on the server-side, expanding on [Practice 1](#practice-1).
 
-## Practice 3
+A load balancer is a system that distributes network or application traffic across multiple servers.
 
-This program is a console app simulating a load balancer on the server-side, expanding on [Practice 2](#practice-2).
+This ensures that no single server becomes overwhelmed.
+
+The goal is to optimize resource use, maximize throughput, minimize response time, and avoid overload on any single resource.
+
+### Instatiation
+
+```csharp
+class Program
+{
+    static void Main(string[] args)
+    {
+        IBalance balancer1 = new Balancer();
+        IBalance balancer2 = new Balancer();
+        IBalance balancer3 = new Balancer();
+        IBalance balancer4 = new Balancer();
+        IBalance balancer5 = new Balancer();
+
+        ICall service = new Service(List<IBalance> balancers);
+
+        var caller = new Caller(service);
+        caller.Service.RequestCard();
+    }
+
+    public static string GetFilePath(string input)
+    {
+        string projectRootPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\.."));
+        return Path.Combine(projectRootPath, input);
+    }
+}
+```
