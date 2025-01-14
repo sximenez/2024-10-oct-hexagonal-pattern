@@ -1,283 +1,36 @@
-﻿For practicing two different design patterns, the choice between having each project in its own solution or both in one solution depends on your goals and preferences. Here are some considerations for each approach:
+﻿## Practice 2
 
-Separate Solutions
-Pros:
+This program is a console app simulating a load balancer on the server-side, expanding on [Practice 1](#practice-1).
 
-Isolation: Each pattern is isolated, making it easier to focus on and understand the specifics of each pattern without interference.
-Clarity: Clear separation of concerns, which can be beneficial for learning and demonstration purposes.
-Simpler Management: Easier to manage dependencies and configurations specific to each pattern.
-Cons:
+A load balancer is a system that distributes network or application traffic across multiple servers.
 
-Overhead: Slightly more overhead in terms of managing multiple solutions.
-Redundancy: Potential duplication of common setup or utility code.
-Single Solution with Multiple Projects
-Pros:
+This ensures that no single server becomes overwhelmed.
 
-Shared Resources: Easier to share common code, utilities, and configurations between projects.
-Convenience: All projects are accessible from a single solution, simplifying navigation and management.
-Comparison: Easier to compare and contrast the patterns side by side.
-Cons:
+The goal is to optimize resource use, maximize throughput, minimize response time, and avoid overload on any single resource.
 
-Complexity: The solution might become more complex with multiple projects, especially if they have different dependencies or configurations.
-Interference: There’s a risk of one project inadvertently affecting another if not properly isolated within the solution.
-Recommendation
-If your primary goal is to learn and practice each pattern in isolation, separate solutions might be more beneficial. This approach ensures that you can focus on each pattern without any potential interference.
+### Instatiation
 
-However, if you want to compare the patterns directly and potentially share some common code or utilities, having both projects in one solution could be more convenient.
-
-Example Structure for Single Solution
-If you choose to go with a single solution, you can structure it like this:
-
-MyPatternsSolution/
-├── Pattern1Project/
-│   ├── Program.cs
-│   ├── Pattern1Class.cs
-│   └── ...
-├── Pattern2Project/
-│   ├── Program.cs
-│   ├── Pattern2Class.cs
-│   └── ...
-├── CommonUtilities/
-│   ├── UtilityClass.cs
-│   └── ...
-└── MyPatternsSolution.sln
-
-This structure keeps each pattern’s project separate while allowing for shared utilities if needed.
-
---
-
-To simulate a router using the Ports and Adapters pattern (also known as Hexagonal Architecture) in a console app in C#, you can follow these steps:
-
-1. Define the Core Domain (Ports)
-Create interfaces that represent the core functionalities your router needs to handle. These interfaces will act as ports.
-
-C#
-
-// IRouter.cs
-public interface IRouter
-{
-    void RouteRequest(string request);
-}
-Code généré par l'IA. Examinez et utilisez soigneusement. Plus d'informations sur la FAQ.
-2. Implement the Core Logic (Domain)
-Implement the core logic that will handle the routing. This is the heart of your application.
-
-C#
-
-// Router.cs
-public class Router : IRouter
-{
-    public void RouteRequest(string request)
-    {
-        Console.WriteLine($"Routing request: {request}");
-        // Add routing logic here
-    }
-}
-Code généré par l'IA. Examinez et utilisez soigneusement. Plus d'informations sur la FAQ.
-3. Create Adapters
-Adapters will handle the interaction between the core logic and the external world (e.g., console input/output).
-
-Console Adapter (Input)
-C#
-
-// ConsoleInputAdapter.cs
-public class ConsoleInputAdapter
-{
-    private readonly IRouter _router;
-
-    public ConsoleInputAdapter(IRouter router)
-    {
-        _router = router;
-    }
-
-    public void Start()
-    {
-        while (true)
-        {
-            Console.Write("Enter request: ");
-            string request = Console.ReadLine();
-            _router.RouteRequest(request);
-        }
-    }
-}
-Code généré par l'IA. Examinez et utilisez soigneusement. Plus d'informations sur la FAQ.
-Console Adapter (Output)
-You can also create an output adapter if needed, but for simplicity, we’ll use the console directly in the core logic.
-
-4. Compose the Application (Main)
-Compose the application by wiring up the core logic with the adapters.
-
-C#
-
-// Program.cs
+```csharp
 class Program
 {
     static void Main(string[] args)
     {
-        IRouter router = new Router();
-        var consoleInputAdapter = new ConsoleInputAdapter(router);
+        IBalance balancer1 = new Balancer();
+        IBalance balancer2 = new Balancer();
+        IBalance balancer3 = new Balancer();
+        IBalance balancer4 = new Balancer();
+        IBalance balancer5 = new Balancer();
 
-        consoleInputAdapter.Start();
+        ICall service = new Service(List<IBalance> balancers);
+
+        var caller = new Caller(service);
+        caller.Service.RequestCard();
+    }
+
+    public static string GetFilePath(string input)
+    {
+        string projectRootPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\.."));
+        return Path.Combine(projectRootPath, input);
     }
 }
-Code généré par l'IA. Examinez et utilisez soigneusement. Plus d'informations sur la FAQ.
-Putting It All Together
-This setup allows you to simulate a router using a console app. The ConsoleInputAdapter reads input from the console and passes it to the Router, which processes the request.
-
-Example Output
-When you run the application, it will prompt you to enter requests, and it will route them accordingly:
-
-Enter request: GET /home
-Routing request: GET /home
-Enter request: POST /login
-Routing request: POST /login
-
-This approach adheres to the Ports and Adapters pattern by clearly separating the core logic (routing) from the input/output mechanisms (console). You can easily extend this by adding more adapters for different types of input/output, such as web requests or file inputs.
-
-If you have any more questions or need further assistance, feel free to ask! 😊
-
-
-
-
-Vous
-Envoyé par vous :
-and if I were to simulate routes as in server side scripting language, for example wordpress
-Copilot
-Génération de vos réponses…
-
-Envoyé par Copilot :
-To simulate routes in a console app using C# similar to how server-side scripting languages like PHP (used in WordPress) handle routes, you can create a simple routing mechanism. This involves mapping URL paths to specific functions or methods that handle the requests. Here’s how you can do it:
-
-Step-by-Step Guide
-Define the Route Interface (Port) Create an interface that represents the routing functionality.
-C#
-
-// IRouter.cs
-public interface IRouter
-{
-    void RegisterRoute(string path, Action handler);
-    void HandleRequest(string path);
-}
-Code généré par l'IA. Examinez et utilisez soigneusement. Plus d'informations sur la FAQ.
-Implement the Router (Core Logic) Implement the router that will manage the routes and handle requests.
-C#
-
-// Router.cs
-using System;
-using System.Collections.Generic;
-
-public class Router : IRouter
-{
-    private readonly Dictionary<string, Action> _routes = new Dictionary<string, Action>();
-
-    public void RegisterRoute(string path, Action handler)
-    {
-        if (!_routes.ContainsKey(path))
-        {
-            _routes.Add(path, handler);
-        }
-    }
-
-    public void HandleRequest(string path)
-    {
-        if (_routes.ContainsKey(path))
-        {
-            _routes[path].Invoke();
-        }
-        else
-        {
-            Console.WriteLine("404 Not Found");
-        }
-    }
-}
-Code généré par l'IA. Examinez et utilisez soigneusement. Plus d'informations sur la FAQ.
-Create Adapters for Input and Output Create adapters to handle console input and output.
-C#
-
-// ConsoleInputAdapter.cs
-public class ConsoleInputAdapter
-{
-    private readonly IRouter _router;
-
-    public ConsoleInputAdapter(IRouter router)
-    {
-        _router = router;
-    }
-
-    public void Start()
-    {
-        while (true)
-        {
-            Console.Write("Enter route: ");
-            string path = Console.ReadLine();
-            _router.HandleRequest(path);
-        }
-    }
-}
-Code généré par l'IA. Examinez et utilisez soigneusement. Plus d'informations sur la FAQ.
-Set Up Routes and Handlers Define the routes and their corresponding handlers.
-C#
-
-// Program.cs
-class Program
-{
-    static void Main(string[] args)
-    {
-        IRouter router = new Router();
-
-        // Register routes
-        router.RegisterRoute("/home", () => Console.WriteLine("Welcome to the Home Page!"));
-        router.RegisterRoute("/about", () => Console.WriteLine("About Us Page"));
-        router.RegisterRoute("/contact", () => Console.WriteLine("Contact Us Page"));
-
-        var consoleInputAdapter = new ConsoleInputAdapter(router);
-        consoleInputAdapter.Start();
-    }
-}
-Code généré par l'IA. Examinez et utilisez soigneusement. Plus d'informations sur la FAQ.
-Example Output
-When you run the application, it will prompt you to enter routes, and it will handle them accordingly:
-
-Enter route: /home
-Welcome to the Home Page!
-Enter route: /about
-About Us Page
-Enter route: /contact
-Contact Us Page
-Enter route: /nonexistent
-404 Not Found
-
-Explanation
-IRouter Interface: Defines the contract for registering and handling routes.
-Router Class: Implements the routing logic, storing routes in a dictionary and invoking the appropriate handler based on the requested path.
-ConsoleInputAdapter: Handles user input from the console and passes the requested path to the router.
-Program Class: Sets up the routes and starts the console input adapter.
-This setup simulates a basic routing mechanism similar to server-side scripting languages like PHP in WordPress, allowing you to handle different routes and their corresponding actions in a console application. If you have any more questions or need further assistance, feel free to ask! 😊
-
-Vous
-Envoyé par vous :
-this is the equivalent of a front controller?
-Copilot
-Génération de vos réponses…
-
-Envoyé par Copilot :
-Yes, the setup described is similar to the Front Controller pattern. In web applications, the Front Controller pattern is used to centralize request handling, directing incoming requests to the appropriate handlers. Here’s how the components in your console app align with this pattern:
-
-Components in the Console App
-Router (Front Controller):
-The Router class acts as the front controller. It centralizes the handling of incoming requests (routes) and directs them to the appropriate handlers.
-Handlers (Actions/Controllers):
-The actions registered with the router (e.g., () => Console.WriteLine("Welcome to the Home Page!")) are equivalent to the controllers or actions in a web application. They handle the specific logic for each route.
-ConsoleInputAdapter (Request Dispatcher):
-The ConsoleInputAdapter simulates the role of a request dispatcher. It captures user input (simulating HTTP requests) and passes it to the router for processing.
-How It Works
-Centralized Request Handling: All requests (user inputs) are funneled through the Router, which determines the appropriate handler based on the route.
-Separation of Concerns: The routing logic is separated from the request handling logic, making the system more modular and easier to maintain.
-Example in Web Applications
-In a typical web application using the Front Controller pattern, you might have something like this:
-
-Front Controller: A single entry point (e.g., index.php in PHP or a main controller in an MVC framework) that handles all incoming HTTP requests.
-Router: Determines which controller/action to invoke based on the request URL.
-Controllers/Actions: Handle the specific logic for each route.
-Console App Example
-In your console app, the Router class is the central point that handles all incoming “requests” (user inputs) and directs them to the appropriate handlers, mimicking the behavior of a front controller in a web application.
+```
