@@ -6,8 +6,7 @@ namespace HexagonalPattern
     {
         static void Main(string[] args)
         {
-            //ConsoleApp.Program.ConsoleApp();
-            LoadBalancer.Program.LoadBalancer();
+            ConsoleApp.Program.ConsoleApp();
         }
     }
 }
