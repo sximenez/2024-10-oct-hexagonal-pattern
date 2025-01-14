@@ -13,7 +13,7 @@ Source 2: [Herberto Graca](https://herbertograca.com/2017/11/16/explicit-archite
   - [Adapters](#adapters)
     - [Core](#core)
   - [Ports](#ports)
-  - [Practice 1](#practice-1)
+  - [Practice](#practice)
     - [Instantiation](#instantiation)
     - [Components](#components)
     - [Tree](#tree)
@@ -24,8 +24,6 @@ Source 2: [Herberto Graca](https://herbertograca.com/2017/11/16/explicit-archite
       - [D (dependency injection)](#d-dependency-injection)
       - [I (interface segregation)](#i-interface-segregation)
       - [L (substitution)](#l-substitution)
-  - [Practice 2](#practice-2)
-  - [Practice 3](#practice-3)
 <!--/TOC-->
 
 ## What is a pattern?
@@ -99,7 +97,7 @@ Caller1 --> Port1
 
 The core can be organized as an adapter. 
 
-Or it can be further abstracted using the [Onion pattern design](#).
+Or it can be further abstracted using the [Onion pattern design](https://herbertograca.com/2017/09/21/onion-architecture/).
 
 ## Ports
 
@@ -107,7 +105,7 @@ Caller and replier adapters communicate with services through `doors` called por
 
 In simple terms, a port is an `interface`.
 
-## Practice 1
+## Practice
 
 This program is a console app simulating data search on a static database.
 
@@ -402,11 +400,3 @@ class Replier3 : IAdvancedReply
 }
 ...
 ```
-
-## Practice 2
-
-This program is a console app simulating a front controller on the user-side, expanding on [Practice 1](#practice-1).
-
-## Practice 3
-
-This program is a console app simulating a load balancer on the server-side, expanding on [Practice 2](#practice-2).
