@@ -4,7 +4,7 @@ Source 1: [Octo](https://blog.octo.com/architecture-hexagonale-trois-principes-e
 
 Source 2: [Herberto Graca](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)
 
-## TOC
+## Table of contents
 
 <!--TOC-->
   - [What is a pattern?](#what-is-a-pattern)
